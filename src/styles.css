@@ -32,7 +32,6 @@ body,
 
 body {
   margin: 0;
-  min-width: 320px;
   min-height: 100vh;
   overflow-x: hidden;
   background:
@@ -526,16 +525,16 @@ h3 {
   inset: 0;
   z-index: 100;
   display: block;
-  width: 100vw;
-  max-width: 100vw;
+  width: 100%;
+  max-width: 100%;
   overflow-x: hidden;
-  padding: 8px;
+  padding: 0;
   background: rgba(37, 36, 34, 0.46);
 }
 
 .modal {
   width: min(100%, 430px);
-  max-width: 100vw;
+  max-width: 100%;
   max-height: min(94dvh, 760px);
   overflow-x: hidden;
   overflow-y: auto;
@@ -549,10 +548,11 @@ h3 {
   right: 0;
   bottom: 0;
   left: 0;
-  width: auto;
-  max-width: none;
+  width: 100%;
+  max-width: 100%;
   margin: 0;
   border-radius: 14px 14px 0 0;
+  transform: none;
 }
 
 .modal-header {
@@ -563,14 +563,14 @@ h3 {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 14px 14px 9px;
+  padding: 14px 12px 9px;
   background: rgba(255, 253, 248, 0.94);
   backdrop-filter: blur(14px);
 }
 
 .modal-header h2 {
   margin-top: 2px;
-  font-size: 1.18rem;
+  font-size: 1.12rem;
 }
 
 .drama-form {
@@ -578,7 +578,7 @@ h3 {
   gap: 12px;
   width: 100%;
   max-width: 100%;
-  padding: 6px 14px calc(18px + env(safe-area-inset-bottom));
+  padding: 6px 12px calc(18px + env(safe-area-inset-bottom));
 }
 
 .drama-form label {
@@ -586,7 +586,7 @@ h3 {
   gap: 7px;
   min-width: 0;
   color: var(--ink-muted);
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 800;
 }
 
@@ -602,6 +602,7 @@ h3 {
   background: #fff;
   color: #252422;
   outline: 0;
+  font-size: 0.95rem;
 }
 
 .drama-form textarea {
@@ -667,29 +668,29 @@ h3 {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 10px;
-  margin: 2px -14px calc(-18px - env(safe-area-inset-bottom));
-  padding: 11px 14px calc(14px + env(safe-area-inset-bottom));
+  margin: 2px -12px calc(-18px - env(safe-area-inset-bottom));
+  padding: 11px 12px calc(14px + env(safe-area-inset-bottom));
   background: rgba(255, 253, 248, 0.96);
   backdrop-filter: blur(14px);
 }
 
 @media (max-width: 540px) {
   .modal-backdrop {
-    padding: 8px 0 0;
+    padding: 0;
   }
 
   .modal {
     width: 100%;
-    max-height: calc(100dvh - 8px);
+    max-height: 100dvh;
     border-radius: 14px 14px 0 0;
   }
 
   .modal-header {
-    padding-inline: 16px;
+    padding-inline: 12px;
   }
 
   .drama-form {
-    padding-inline: 16px;
+    padding-inline: 12px;
   }
 
   .form-row {
@@ -701,17 +702,8 @@ h3 {
   }
 
   .form-actions {
-    margin-inline: -16px;
-    padding-inline: 16px;
-  }
-}
-
-@media (min-width: 541px) {
-  .mobile-form-sheet {
-    right: auto;
-    left: 50%;
-    width: min(100%, 430px);
-    transform: translateX(-50%);
+    margin-inline: -12px;
+    padding-inline: 12px;
   }
 }
 
