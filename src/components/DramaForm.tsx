@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { X } from 'lucide-react'
 import type { Drama, DramaInput, DramaStatus } from '../types'
 
@@ -23,28 +23,41 @@ const emptyForm = (status: DramaStatus): DramaInput => ({
 })
 
 export function DramaForm({ open, initial, defaultStatus, onClose, onSubmit }: Props) {
-  const [form, setForm] = useState<DramaInput>(emptyForm(defaultStatus))
-
-  useEffect(() => {
-    if (!open) return
-    if (initial) {
-      setForm({
-        title: initial.title,
-        mediaType: initial.mediaType ?? 'drama',
-        network: initial.network,
-        day: initial.day,
-        episode: initial.episode,
-        totalEpisodes: initial.totalEpisodes,
-        rating: initial.rating,
-        memo: initial.memo,
-        status: initial.status,
-      })
-    } else {
-      setForm(emptyForm(defaultStatus))
-    }
-  }, [open, initial, defaultStatus])
-
   if (!open) return null
+
+  return (
+    <DramaFormContent
+      key={initial?.id ?? `new-${defaultStatus}`}
+      initial={initial}
+      defaultStatus={defaultStatus}
+      onClose={onClose}
+      onSubmit={onSubmit}
+    />
+  )
+}
+
+function initialForm(initial: Drama | null | undefined, defaultStatus: DramaStatus): DramaInput {
+  if (!initial) return emptyForm(defaultStatus)
+  return {
+    title: initial.title,
+    mediaType: initial.mediaType ?? 'drama',
+    network: initial.network,
+    day: initial.day,
+    episode: initial.episode,
+    totalEpisodes: initial.totalEpisodes,
+    rating: initial.rating,
+    memo: initial.memo,
+    status: initial.status,
+  }
+}
+
+function DramaFormContent({
+  initial,
+  defaultStatus,
+  onClose,
+  onSubmit,
+}: Omit<Props, 'open'>) {
+  const [form, setForm] = useState<DramaInput>(() => initialForm(initial, defaultStatus))
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -63,7 +76,10 @@ export function DramaForm({ open, initial, defaultStatus, onClose, onSubmit }: P
         onClick={(e) => e.stopPropagation()}
       >
         <header className="modal-header">
-          <h2 id="drama-form-title">{initial ? 'ドラマを編集' : 'ドラマを追加'}</h2>
+          <div>
+            <p>{initial ? '内容を更新' : '新しく記録'}</p>
+            <h2 id="drama-form-title">{initial ? '作品を編集' : '作品を追加'}</h2>
+          </div>
           <button type="button" className="icon-button" onClick={onClose} aria-label="閉じる">
             <X size={20} />
           </button>
@@ -76,52 +92,66 @@ export function DramaForm({ open, initial, defaultStatus, onClose, onSubmit }: P
               type="text"
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
-              placeholder="例：夜明けのカルテ"
+              placeholder="例: 海に眠るダイヤモンド"
               required
               autoFocus
             />
           </label>
 
-          <label>
-            種類
-            <select
-              value={form.mediaType}
-              onChange={(e) =>
-                setForm({ ...form, mediaType: e.target.value as DramaInput['mediaType'] })
-              }
-            >
-              <option value="drama">ドラマ</option>
-              <option value="movie">映画</option>
-              <option value="book">本</option>
-              <option value="manga">漫画</option>
-            </select>
-          </label>
+          <div className="form-row compact">
+            <label>
+              種類
+              <select
+                value={form.mediaType}
+                onChange={(e) =>
+                  setForm({ ...form, mediaType: e.target.value as DramaInput['mediaType'] })
+                }
+              >
+                <option value="drama">ドラマ</option>
+                <option value="movie">映画</option>
+                <option value="book">本</option>
+                <option value="manga">漫画</option>
+              </select>
+            </label>
+
+            <label>
+              リスト
+              <select
+                value={form.status}
+                onChange={(e) => setForm({ ...form, status: e.target.value as DramaStatus })}
+              >
+                <option value="watching">視聴中</option>
+                <option value="want">見たい</option>
+              </select>
+            </label>
+          </div>
 
           <label>
-            放送局・配信
+            放送局・配信先
             <input
               type="text"
               value={form.network}
               onChange={(e) => setForm({ ...form, network: e.target.value })}
-              placeholder="例：TBS / Netflix"
+              placeholder="例: TBS / Netflix"
             />
           </label>
 
           <label>
-            放送日時
+            放送日時・メモ日
             <input
               type="text"
               value={form.day}
               onChange={(e) => setForm({ ...form, day: e.target.value })}
-              placeholder="例：火曜 22:00"
+              placeholder="例: 火曜 22:00"
             />
           </label>
 
-          <div className="form-row">
+          <div className="form-row compact">
             <label>
-              話数
+              今の話数
               <input
                 type="number"
+                inputMode="numeric"
                 min={0}
                 value={form.episode || ''}
                 onChange={(e) =>
@@ -134,6 +164,7 @@ export function DramaForm({ open, initial, defaultStatus, onClose, onSubmit }: P
               全話数
               <input
                 type="number"
+                inputMode="numeric"
                 min={1}
                 value={form.totalEpisodes ?? ''}
                 onChange={(e) => {
@@ -147,17 +178,6 @@ export function DramaForm({ open, initial, defaultStatus, onClose, onSubmit }: P
               />
             </label>
           </div>
-
-          <label>
-            リスト
-            <select
-              value={form.status}
-              onChange={(e) => setForm({ ...form, status: e.target.value as DramaStatus })}
-            >
-              <option value="watching">視聴中</option>
-              <option value="want">見たい</option>
-            </select>
-          </label>
 
           <label>
             評価
@@ -190,7 +210,7 @@ export function DramaForm({ open, initial, defaultStatus, onClose, onSubmit }: P
             <textarea
               value={form.memo}
               onChange={(e) => setForm({ ...form, memo: e.target.value })}
-              placeholder="感想やおすすめポイントなど"
+              placeholder="感想、推しポイント、次に見る前のメモなど"
               rows={3}
             />
           </label>
