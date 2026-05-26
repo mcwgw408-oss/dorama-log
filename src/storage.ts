@@ -8,7 +8,7 @@ export function loadDramas(): Drama[] {
     if (!raw) return []
     const parsed = JSON.parse(raw) as unknown
     if (!Array.isArray(parsed)) return []
-    return parsed.filter(isValidDrama)
+    return parsed.map(normalizeDrama).filter(isValidDrama)
   } catch {
     return []
   }
@@ -25,6 +25,20 @@ function isValidDrama(value: unknown): value is Drama {
     typeof d.id === 'string' &&
     typeof d.title === 'string' &&
     typeof d.status === 'string' &&
+    typeof d.mediaType === 'string' &&
+    (d.mediaType === 'drama' ||
+      d.mediaType === 'movie' ||
+      d.mediaType === 'book' ||
+      d.mediaType === 'manga') &&
     (d.status === 'watching' || d.status === 'want')
   )
+}
+
+function normalizeDrama(value: unknown): unknown {
+  if (!value || typeof value !== 'object') return value
+  const d = value as Record<string, unknown>
+  if (typeof d.mediaType !== 'string') {
+    return { ...d, mediaType: 'drama' }
+  }
+  return d
 }

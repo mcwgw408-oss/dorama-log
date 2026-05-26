@@ -12,6 +12,7 @@ type Props = {
 
 const emptyForm = (status: DramaStatus): DramaInput => ({
   title: '',
+  mediaType: 'drama',
   network: '',
   day: '',
   episode: 0,
@@ -29,6 +30,7 @@ export function DramaForm({ open, initial, defaultStatus, onClose, onSubmit }: P
     if (initial) {
       setForm({
         title: initial.title,
+        mediaType: initial.mediaType ?? 'drama',
         network: initial.network,
         day: initial.day,
         episode: initial.episode,
@@ -78,6 +80,21 @@ export function DramaForm({ open, initial, defaultStatus, onClose, onSubmit }: P
               required
               autoFocus
             />
+          </label>
+
+          <label>
+            種類
+            <select
+              value={form.mediaType}
+              onChange={(e) =>
+                setForm({ ...form, mediaType: e.target.value as DramaInput['mediaType'] })
+              }
+            >
+              <option value="drama">ドラマ</option>
+              <option value="movie">映画</option>
+              <option value="book">本</option>
+              <option value="manga">漫画</option>
+            </select>
           </label>
 
           <label>

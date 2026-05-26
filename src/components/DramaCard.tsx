@@ -1,4 +1,4 @@
-import { Check, Clock3, MoreVertical, Pencil, Star, Trash2, Tv } from 'lucide-react'
+import { BookOpen, Check, Clock3, Film, MoreVertical, Pencil, Star, Trash2, Tv } from 'lucide-react'
 import { useState } from 'react'
 import type { Drama } from '../types'
 
@@ -12,6 +12,7 @@ type Props = {
 
 export function DramaCard({ drama, onEdit, onDelete, onMoveToWant, onMoveToWatching }: Props) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const mediaLabel = getMediaLabel(drama.mediaType)
 
   const episodeLabel =
     drama.totalEpisodes != null
@@ -23,7 +24,7 @@ export function DramaCard({ drama, onEdit, onDelete, onMoveToWant, onMoveToWatch
   return (
     <article className="drama-card">
       <div className="poster-mark" aria-hidden="true">
-        <Tv size={24} />
+        {getMediaIcon(drama.mediaType)}
       </div>
       <div className="drama-info">
         <div className="drama-title-row">
@@ -79,6 +80,7 @@ export function DramaCard({ drama, onEdit, onDelete, onMoveToWant, onMoveToWatch
             )}
           </div>
         </div>
+        <p className="media-type-chip">{mediaLabel}</p>
         {drama.network && <p>{drama.network}</p>}
         <div className="meta-row">
           {drama.day && (
@@ -109,4 +111,30 @@ export function DramaCard({ drama, onEdit, onDelete, onMoveToWant, onMoveToWatch
       </div>
     </article>
   )
+}
+
+function getMediaLabel(mediaType: Drama['mediaType']): string {
+  switch (mediaType) {
+    case 'movie':
+      return '映画'
+    case 'book':
+      return '本'
+    case 'manga':
+      return '漫画'
+    default:
+      return 'ドラマ'
+  }
+}
+
+function getMediaIcon(mediaType: Drama['mediaType']) {
+  switch (mediaType) {
+    case 'movie':
+      return <Film size={24} />
+    case 'book':
+      return <BookOpen size={24} />
+    case 'manga':
+      return <BookOpen size={24} />
+    default:
+      return <Tv size={24} />
+  }
 }

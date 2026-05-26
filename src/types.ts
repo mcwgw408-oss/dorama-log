@@ -1,8 +1,10 @@
 export type DramaStatus = 'watching' | 'want'
+export type MediaType = 'drama' | 'movie' | 'book' | 'manga'
 
 export type Drama = {
   id: string
   title: string
+  mediaType: MediaType
   network: string
   day: string
   episode: number
@@ -16,6 +18,7 @@ export type Drama = {
 
 export type DramaInput = {
   title: string
+  mediaType: MediaType
   network: string
   day: string
   episode: number

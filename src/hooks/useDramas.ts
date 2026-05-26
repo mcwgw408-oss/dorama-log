@@ -11,6 +11,7 @@ function toDrama(input: DramaInput, id?: string): Drama {
   return {
     id: id ?? createId(),
     title: input.title.trim(),
+    mediaType: input.mediaType,
     network: input.network.trim(),
     day: input.day.trim(),
     episode: input.episode,

@@ -233,6 +233,17 @@ h3 {
   font-size: 0.86rem;
 }
 
+.media-type-chip {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(44, 41, 38, 0.08);
+  color: #5b554f;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
 .status {
   flex: 0 0 auto;
   border-radius: 999px;

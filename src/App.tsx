@@ -45,7 +45,7 @@ function App() {
       <header className="top-bar">
         <div>
           <p className="eyebrow">Dorama Log</p>
-          <h1>{tab === 'watching' ? '今観ているドラマ' : 'これから見たいドラマ'}</h1>
+          <h1>{tab === 'watching' ? '今楽しんでいる作品' : 'これから楽しみたい作品'}</h1>
         </div>
         <button
           className="icon-button"
@@ -63,8 +63,8 @@ function App() {
             type="search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="タイトル・放送局・メモで検索"
-            aria-label="ドラマを検索"
+            placeholder="タイトル・配信先・メモで検索"
+            aria-label="メディアを検索"
           />
         </div>
       )}
@@ -118,15 +118,15 @@ function App() {
           <div className="empty-state">
             <p>
               {search
-                ? '該当するドラマがありません'
+                ? '該当する項目がありません'
                 : tab === 'watching'
-                  ? '視聴中のドラマがまだありません'
+                  ? '視聴中・読書中の項目がまだありません'
                   : '見たいリストがまだ空です'}
             </p>
             {!search && (
               <button type="button" className="btn-primary" onClick={openAdd}>
                 <Plus size={17} />
-                最初のドラマを追加
+                最初の項目を追加
               </button>
             )}
           </div>
