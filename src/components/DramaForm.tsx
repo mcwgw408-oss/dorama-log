@@ -69,7 +69,7 @@ function DramaFormContent({
   return (
     <div className="modal-backdrop" onClick={onClose} role="presentation">
       <div
-        className="modal"
+        className="modal mobile-form-sheet"
         role="dialog"
         aria-modal="true"
         aria-labelledby="drama-form-title"
