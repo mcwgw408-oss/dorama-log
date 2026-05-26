@@ -100,6 +100,12 @@ p {
   letter-spacing: 0;
 }
 
+.eyebrow span {
+  margin-left: 6px;
+  color: var(--ink-muted);
+  font-weight: 800;
+}
+
 h1 {
   max-width: 11em;
   margin-top: 5px;

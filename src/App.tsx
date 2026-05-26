@@ -64,7 +64,7 @@ function App() {
       <header className="hero">
         <div className="hero-top">
           <div>
-            <p className="eyebrow">Dorama Log</p>
+            <p className="eyebrow">Dorama Log <span>v2</span></p>
             <h1>{currentTab.title}</h1>
           </div>
           <button
