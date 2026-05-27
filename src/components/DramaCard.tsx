@@ -1,6 +1,7 @@
 import {
   BookOpen,
   Check,
+  CheckCircle2,
   Clock3,
   Film,
   MoreVertical,
@@ -18,9 +19,17 @@ type Props = {
   onDelete: (id: string) => void
   onMoveToWant: (id: string) => void
   onMoveToWatching: (id: string) => void
+  onMoveToFinished: (id: string) => void
 }
 
-export function DramaCard({ drama, onEdit, onDelete, onMoveToWant, onMoveToWatching }: Props) {
+export function DramaCard({
+  drama,
+  onEdit,
+  onDelete,
+  onMoveToWant,
+  onMoveToWatching,
+  onMoveToFinished,
+}: Props) {
   const [menuOpen, setMenuOpen] = useState(false)
   const mediaLabel = getMediaLabel(drama.mediaType)
   const progress =
@@ -76,7 +85,20 @@ export function DramaCard({ drama, onEdit, onDelete, onMoveToWant, onMoveToWatch
                   <Pencil size={16} />
                   編集
                 </button>
-                {drama.status === 'watching' ? (
+                {drama.status !== 'watching' && (
+                  <button
+                    type="button"
+                    role="menuitem"
+                    onClick={() => {
+                      onMoveToWatching(drama.id)
+                      setMenuOpen(false)
+                    }}
+                  >
+                    <Tv size={16} />
+                    視聴中へ移動
+                  </button>
+                )}
+                {drama.status !== 'want' && (
                   <button
                     type="button"
                     role="menuitem"
@@ -88,17 +110,18 @@ export function DramaCard({ drama, onEdit, onDelete, onMoveToWant, onMoveToWatch
                     <BookOpen size={16} />
                     見たいへ移動
                   </button>
-                ) : (
+                )}
+                {drama.status !== 'finished' && (
                   <button
                     type="button"
                     role="menuitem"
                     onClick={() => {
-                      onMoveToWatching(drama.id)
+                      onMoveToFinished(drama.id)
                       setMenuOpen(false)
                     }}
                   >
-                    <Tv size={16} />
-                    視聴中へ移動
+                    <CheckCircle2 size={16} />
+                    見終わったへ移動
                   </button>
                 )}
                 <button type="button" role="menuitem" className="danger" onClick={handleDelete}>

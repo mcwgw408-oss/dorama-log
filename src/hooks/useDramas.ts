@@ -59,6 +59,7 @@ export function useDramas() {
 
   const watching = dramas.filter((d) => d.status === 'watching')
   const want = dramas.filter((d) => d.status === 'want')
+  const finished = dramas.filter((d) => d.status === 'finished')
 
-  return { dramas, watching, want, add, update, remove, setStatus }
+  return { dramas, watching, want, finished, add, update, remove, setStatus }
 }

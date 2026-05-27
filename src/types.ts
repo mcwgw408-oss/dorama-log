@@ -1,4 +1,4 @@
-export type DramaStatus = 'watching' | 'want'
+export type DramaStatus = 'watching' | 'want' | 'finished'
 export type MediaType = 'drama' | 'movie' | 'book' | 'manga'
 
 export type Drama = {

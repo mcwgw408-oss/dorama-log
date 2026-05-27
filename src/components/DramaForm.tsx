@@ -122,6 +122,7 @@ function DramaFormContent({
               >
                 <option value="watching">視聴中</option>
                 <option value="want">見たい</option>
+                <option value="finished">見終わった</option>
               </select>
             </label>
           </div>

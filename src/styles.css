@@ -173,7 +173,7 @@ h1 {
 
 .summary-panel {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 1px;
   overflow: hidden;
   margin: 18px 0 14px;
@@ -211,7 +211,7 @@ h1 {
   top: max(10px, env(safe-area-inset-top));
   z-index: 20;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
   padding: 5px;
   border: 1px solid rgba(229, 219, 206, 0.82);
@@ -221,14 +221,16 @@ h1 {
 }
 
 .tab-nav button {
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 7px;
-  min-height: 46px;
-  padding: 0 10px;
+  gap: 4px;
+  min-height: 52px;
+  padding: 4px 6px;
   border: 0;
   border-radius: 7px;
   background: transparent;
   color: var(--ink-muted);
+  font-size: 0.8rem;
   font-weight: 850;
 }
 

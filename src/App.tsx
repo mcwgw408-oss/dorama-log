@@ -1,11 +1,11 @@
 import { useMemo, useState } from 'react'
-import { Bookmark, Clapperboard, Plus, Search, Sparkles, Tv, X } from 'lucide-react'
+import { Bookmark, CheckCircle2, Clapperboard, Plus, Search, Sparkles, Tv, X } from 'lucide-react'
 import { DramaCard } from './components/DramaCard'
 import { DramaForm } from './components/DramaForm'
 import { useDramas } from './hooks/useDramas'
 import type { Drama, DramaStatus } from './types'
 
-type Tab = 'watching' | 'want'
+type Tab = DramaStatus
 
 const tabCopy = {
   watching: {
@@ -18,17 +18,23 @@ const tabCopy = {
     title: 'これから見たい作品',
     empty: '次に見たい作品をメモしておけます',
   },
+  finished: {
+    label: '見終わった',
+    title: '見終わった作品',
+    empty: '見終わった作品をここに残せます',
+  },
 } satisfies Record<Tab, { label: string; title: string; empty: string }>
 
 function App() {
-  const { watching, want, add, update, remove, setStatus } = useDramas()
+  const { watching, want, finished, add, update, remove, setStatus } = useDramas()
   const [tab, setTab] = useState<Tab>('watching')
   const [search, setSearch] = useState('')
   const [formOpen, setFormOpen] = useState(false)
   const [editing, setEditing] = useState<Drama | null>(null)
   const [searchOpen, setSearchOpen] = useState(false)
 
-  const list = tab === 'watching' ? watching : want
+  const listByTab: Record<Tab, Drama[]> = { watching, want, finished }
+  const list = listByTab[tab]
   const currentTab = tabCopy[tab]
 
   const filtered = useMemo(() => {
@@ -43,11 +49,11 @@ function App() {
   }, [list, search])
 
   const latestUpdated = useMemo(() => {
-    const all = [...watching, ...want].sort(
+    const all = [...watching, ...want, ...finished].sort(
       (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
     )
     return all[0]?.title
-  }, [watching, want])
+  }, [watching, want, finished])
 
   function openAdd() {
     setEditing(null)
@@ -112,7 +118,11 @@ function App() {
           <span className="summary-label">見たい</span>
         </div>
         <div>
-          <span className="summary-number">{watching.length + want.length}</span>
+          <span className="summary-number">{finished.length}</span>
+          <span className="summary-label">見終わった</span>
+        </div>
+        <div>
+          <span className="summary-number">{watching.length + want.length + finished.length}</span>
           <span className="summary-label">合計</span>
         </div>
       </section>
@@ -135,6 +145,15 @@ function App() {
           <Bookmark size={18} />
           見たい
           {want.length > 0 && <span className="tab-badge">{want.length}</span>}
+        </button>
+        <button
+          type="button"
+          className={tab === 'finished' ? 'active' : ''}
+          onClick={() => setTab('finished')}
+        >
+          <CheckCircle2 size={18} />
+          見終わった
+          {finished.length > 0 && <span className="tab-badge">{finished.length}</span>}
         </button>
       </nav>
 
@@ -173,6 +192,7 @@ function App() {
                 onDelete={remove}
                 onMoveToWant={(id) => setStatus(id, 'want')}
                 onMoveToWatching={(id) => setStatus(id, 'watching')}
+                onMoveToFinished={(id) => setStatus(id, 'finished')}
               />
             ))}
           </div>

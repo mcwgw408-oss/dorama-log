@@ -30,7 +30,7 @@ function isValidDrama(value: unknown): value is Drama {
       d.mediaType === 'movie' ||
       d.mediaType === 'book' ||
       d.mediaType === 'manga') &&
-    (d.status === 'watching' || d.status === 'want')
+    (d.status === 'watching' || d.status === 'want' || d.status === 'finished')
   )
 }
 
